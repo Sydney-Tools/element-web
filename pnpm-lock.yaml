@@ -1440,11 +1440,11 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(react@19.3.0)
       react-resizable-panels:
-        specifier: 4.14.1
-        version: 4.14.1(react-dom@19.3.0)(react@19.3.0)
+        specifier: 4.14.2
+        version: 4.14.2(react-dom@19.3.0)(react@19.3.0)
       react-virtuoso:
         specifier: ^4.14.0
-        version: 4.18.15(react-dom@19.3.0)(react@19.3.0)
+        version: 4.18.16(react-dom@19.3.0)(react@19.3.0)
       temporal-polyfill:
         specifier: ^1.0.0
         version: 1.0.5
@@ -11250,8 +11250,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-resizable-panels@4.14.1:
-    resolution: {integrity: sha512-OB1bXDNTLcGgTTbaX6Dn5efZhlMboSnkfr1w4xpsJTHPEbRJpACBhXpgRCXozgPO1ztgFeZRUe5J3mFNCVKm5g==}
+  react-resizable-panels@4.14.2:
+    resolution: {integrity: sha512-s35mfXhwpPEPnB+BKPCZJ9VZU0CHb1I9trm9tijEGBNv1Srl0HzIweENeXnsQvd0Xm9BeOBkEzDGVJOZM2mkEQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -11275,8 +11275,8 @@ packages:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
 
-  react-virtuoso@4.18.15:
-    resolution: {integrity: sha512-YvmOV0PThfObKUzXbZvlCfIO04yvZ6gRXkSiib472qEypDyT2ZSfNtqHr1F7XY3UsHp43hJkDo8WiFq3irHQZA==}
+  react-virtuoso@4.18.16:
+    resolution: {integrity: sha512-BumVOhd0mNKlBkqeHojlLP8IRlJ2oYU7haU92GvBSlSzcdlWUAxIu1gphKm5gLQm07gMzmoQRXdVQeiG4TKSeQ==}
     peerDependencies:
       react: '>=16 || >=17 || >= 18 || >= 19'
       react-dom: '>=16 || >=17 || >= 18 || >=19'
@@ -23930,7 +23930,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.3.0
 
-  react-resizable-panels@4.14.1(react-dom@19.3.0)(react@19.3.0):
+  react-resizable-panels@4.14.2(react-dom@19.3.0)(react@19.3.0):
     dependencies:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
@@ -23954,7 +23954,7 @@ snapshots:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
 
-  react-virtuoso@4.18.15(react-dom@19.3.0)(react@19.3.0):
+  react-virtuoso@4.18.16(react-dom@19.3.0)(react@19.3.0):
     dependencies:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)

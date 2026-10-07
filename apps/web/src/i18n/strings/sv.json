@@ -98,6 +98,7 @@
         "revoke": "Återkalla",
         "save": "Spara",
         "search": "Sök",
+        "select_to_copy": "Markera för att kopiera",
         "send_report": "Skicka anmälan",
         "set_avatar": "Ställ in profilbild",
         "share": "Dela",
@@ -3451,14 +3452,14 @@
                 "other": "%(senderName)s har lagt till den alternativa adressen %(addresses)s för den här chatten."
             },
             "alt_removed": {
-                "other": "%(senderName)s tog bort de alternativa adresserna %(addresses)s från det här rummet.",
-                "one": "%(senderName)s tog bort den alternativa adressen %(addresses)s från det här rummet."
+                "one": "%(senderName)s tog bort den alternativa adressen %(addresses)s från det här rummet.",
+                "other": "%(senderName)s tog bort de alternativa adresserna %(addresses)s från det här rummet."
             },
-            "changed": "%(senderName)s ändrade adresserna för det här rummet.",
-            "changed_alternative": "%(senderName)s ändrade de alternativa adresserna för det här rummet.",
-            "changed_main_and_alternative": "%(senderName)s ändrade huvudadressen och de alternativa adresserna för det här rummet.",
-            "removed": "%(senderName)s tog bort huvudadressen för detta rum.",
-            "set": "%(senderName)s satte huvudadressen för detta rum till %(address)s."
+            "changed": "%(senderName)s har ändrat adresserna för den här chatten.",
+            "changed_alternative": "%(senderName)s har ändrat de alternativa adresserna för den här chatten.",
+            "changed_main_and_alternative": "%(senderName)s har ändrat huvudadressen och den alternativa adressen för den här chatten.",
+            "removed": "%(senderName)s tog bort huvudadressen för denna chatt.",
+            "set": "%(senderName)s angav huvudadressen för den här chatten till %(address)s."
         },
         "m.room.create": {
             "continuation": "Detta rum är en fortsättning på en annan konversation.",

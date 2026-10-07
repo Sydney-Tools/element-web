@@ -74,6 +74,10 @@
         },
         "toggle_event": "Джерело події"
     },
+    "document_viewer": {
+        "error_load": "Не вдалося завантажити цей файл.",
+        "loading": "Завантаження документа…"
+    },
     "emoji": {
         "categories": "Категорії",
         "category_activities": "Діяльність",

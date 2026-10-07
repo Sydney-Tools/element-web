@@ -100,6 +100,7 @@
         "revoke": "Odwołaj",
         "save": "Zapisz",
         "search": "Szukaj",
+        "select_to_copy": "Kliknij, aby skopiować",
         "send_report": "Wyślij zgłoszenie",
         "set_avatar": "Ustaw zdjęcie profilowe",
         "share": "Udostępnij",
@@ -3503,15 +3504,15 @@
                 "many": "%(senderName)s dodał alternatywne adresy %(addresses)s dla tego czatu."
             },
             "alt_removed": {
-                "one": "%(senderName)s usunął alternatywny adres %(addresses)s pokoju.",
-                "few": "%(senderName)s usunął alternatywne adresy %(addresses)s pokoju.",
-                "many": "%(senderName)s usunął alternatywne adresy %(addresses)s pokoju."
+                "one": "%(senderName)s usunął alternatywny adres %(addresses)s dla tego czatu.",
+                "few": "%(senderName)s usunął alternatywne adresy %(addresses)s dla tego czatu.",
+                "many": "%(senderName)s usunął alternatywne adresy %(addresses)s dla tego czatu."
             },
-            "changed": "%(senderName)s zmienił adresy dla tego pokoju.",
-            "changed_alternative": "%(senderName)s zmienił alternatywne adresy dla tego pokoju.",
-            "changed_main_and_alternative": "%(senderName)s zmienił główne i alternatywne adresy dla tego pokoju.",
-            "removed": "%(senderName)s usunął główny adres tego pokoju.",
-            "set": "%(senderName)s ustawił główny adres dla tego pokoju na %(address)s."
+            "changed": "%(senderName)s zmienił adresy tego czatu.",
+            "changed_alternative": "%(senderName)s zmienił alternatywne adresy dla tego czatu.",
+            "changed_main_and_alternative": "%(senderName)s zmienił główny i alternatywny adres tego czatu.",
+            "removed": "%(senderName)s usunął główny adres tego czatu.",
+            "set": "%(senderName)s ustawił główny adres dla tego czatu na %(address)s."
         },
         "m.room.create": {
             "continuation": "Ten pokój jest kontynuacją innej rozmowy.",

@@ -96,6 +96,7 @@
         "revoke": "撤销",
         "save": "保存",
         "search": "搜索",
+        "select_to_copy": "选择以复制",
         "send_report": "发送举报",
         "set_avatar": "设置头像",
         "share": "分享",
@@ -3430,14 +3431,13 @@
                 "other": "%(senderName)s 已为此聊天添加备选地址 %(addresses)s。"
             },
             "alt_removed": {
-                "one": "%(senderName)s 已移除此房间的备选地址 %(address)s。",
-                "other": "%(senderName)s 已移除此房间的备选地址 %(addresses)s。"
+                "other": "%(senderName)s 已为此聊天移除备选地址 %(addresses)s。"
             },
-            "changed": "%(senderName)s 更改了此房间的地址。",
-            "changed_alternative": "%(senderName)s 更改了此房间的备选地址。",
-            "changed_main_and_alternative": "%(senderName)s 已更改此房间的主要地址与备选地址。",
-            "removed": "%(senderName)s 已移除此房间的主地址。",
-            "set": "%(senderName)s 已将此房间的主地址设置为 %(address)s。"
+            "changed": "%(senderName)s 已为此聊天更改地址。",
+            "changed_alternative": "%(senderName)s 已为此聊天更改备选地址。",
+            "changed_main_and_alternative": "%(senderName)s 已为此聊天更改主要与备选地址。",
+            "removed": "%(senderName)s 已为此聊天移除主要地址。",
+            "set": "%(senderName)s 已将此聊天的主要地址设置为 %(address)s。"
         },
         "m.room.create": {
             "continuation": "此房间是另一个对话的延续。",

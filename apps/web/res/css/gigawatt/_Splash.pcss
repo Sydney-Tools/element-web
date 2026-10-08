@@ -1,0 +1,27 @@
+/* Gigawatt loading splash (see src/gigawatt/GigawattSplash.tsx). */
+
+.gw_Splash {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cpd-space-4x);
+    background: var(--cpd-color-bg-canvas-default);
+}
+
+.gw_Splash_car {
+    width: min(360px, 70vw);
+    height: auto;
+    user-select: none;
+}
+
+.gw_Splash_line {
+    margin: 0;
+    font: var(--cpd-font-body-md-regular);
+    letter-spacing: 0.02em;
+    color: var(--cpd-color-text-secondary);
+}
+
+.gw_Splash_spinner {
+    height: 32px;
+}

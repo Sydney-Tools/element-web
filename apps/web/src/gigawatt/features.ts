@@ -11,3 +11,9 @@ guarded by these constants rather than deleted.
  * toasts, and no Encryption tab in the user settings.
  */
 export const ENCRYPTION_UI = false;
+
+/**
+ * Accounts come from Zitadel (Google SSO); there are no Matrix passwords to
+ * set or change. When false: no "Set a new account password" panel.
+ */
+export const LOCAL_PASSWORDS = false;

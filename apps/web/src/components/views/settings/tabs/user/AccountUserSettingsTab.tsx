@@ -18,6 +18,7 @@ import AccessibleButton from "../../../elements/AccessibleButton";
 import DeactivateAccountDialog from "../../../dialogs/DeactivateAccountDialog";
 import Modal from "../../../../../Modal";
 import { UIFeature } from "../../../../../settings/UIFeature";
+import { LOCAL_PASSWORDS } from "../../../../../gigawatt/features";
 import ErrorDialog, { extractErrorMessageFromError } from "../../../dialogs/ErrorDialog";
 import ChangePassword from "../../ChangePassword";
 import SettingsTab from "../SettingsTab";
@@ -45,7 +46,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
     onPasswordChangeError,
     onPasswordChanged,
 }) => {
-    if (!canChangePassword) return <></>;
+    if (!canChangePassword || !LOCAL_PASSWORDS) return <></>;
 
     return (
         <SettingsSection>

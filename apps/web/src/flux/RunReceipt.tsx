@@ -15,6 +15,8 @@ export interface RunInfo {
     output_tokens?: number | string | null;
     duration_ms?: number | string;
     route?: { tier?: string; reason?: string; p?: number | string; confidence?: number | string };
+    // a team run (design 016): who was asked and what each cost
+    members?: { agent?: string; model?: string; input_tokens?: number | string; output_tokens?: number | string; denied?: boolean }[];
 }
 
 export function runInfoOf(content: IContent): RunInfo | undefined {
@@ -49,6 +51,10 @@ export function RunReceipt({ content }: { content: IContent }): JSX.Element | nu
                           ? `auto ${Math.round(Number(run.route.p) * 100)}%`
                           : "default";
         parts.push(`${run.route.tier} (${why})`);
+    }
+    if (run.members && run.members.length > 0) {
+        const asked = run.members.filter((m) => !m.denied).map((m) => m.agent ?? "?");
+        parts.push(`asked ${asked.join(", ")}`);
     }
     if (run.model) parts.push(run.model);
     const tin = formatTokens(run.input_tokens);

@@ -1,21 +1,22 @@
 /*
 Gigawatt (Sydney Tools) — our own built-in theme.
 
-A copy of Element's dark theme (same layer order, same imports) with our
-tokens and variables layered on top in _gigawatt.pcss. Feature styling that
-is specific to Gigawatt (agent runs, approval cards, flux meter) lives in
-res/css/gigawatt/ and is pulled in through _components.pcss like any other
-component, so it works under every theme; this file is where the *look* of
-Gigawatt is decided.
+A copy of Element's light theme (same layer order, same imports) with our
+tokens and variables layered on top in _gigawatt.pcss. Light first: it is
+where most people land; a dark variant can follow the same shape later.
+
+Feature styling specific to Gigawatt (agent runs, approval cards, flux
+meter) lives in res/css/gigawatt/ and is pulled in through _components.pcss
+like any other component, so it works under every theme; this file is where
+the *look* of Gigawatt is decided.
 */
 @layer compound-tokens, compound-web, shared-components, app-web;
 
 @import "../../../../res/css/_font-sizes.pcss" layer(app-web);
 @import "../../light/css/_fonts.pcss" layer(app-web);
 @import "../../light/css/_light.pcss" layer(app-web);
-@import "../../dark/css/_dark.pcss" layer(app-web);
 @import "_gigawatt.pcss" layer(app-web);
 @import "../../light/css/_mods.pcss" layer(app-web);
 @import "../../../../res/css/_components.pcss" layer(app-web);
-@import url("highlight.js/styles/atom-one-dark.min.css") layer(app-web);
-@import url("github-markdown-css/github-markdown-dark.css") layer(app-web);
+@import url("highlight.js/styles/atom-one-light.min.css") layer(app-web);
+@import url("github-markdown-css/github-markdown-light.css") layer(app-web);

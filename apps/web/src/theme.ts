@@ -25,7 +25,7 @@ import { logger } from "matrix-js-sdk/src/logger";
 
 import { _t } from "./languageHandler";
 import SettingsStore from "./settings/SettingsStore";
-import { GIGAWATT_THEME } from "./gigawatt/features";
+import { GIGAWATT_THEME, isLightStylesheet } from "./gigawatt/features";
 import ThemeWatcher from "./settings/watchers/ThemeWatcher";
 import { FontWatcher } from "./settings/watchers/FontWatcher";
 
@@ -372,7 +372,7 @@ export async function setTheme(theme?: string): Promise<void> {
      */
     document.body.classList.remove("cpd-theme-light", "cpd-theme-dark", "cpd-theme-light-hc", "cpd-theme-dark-hc");
 
-    let compoundThemeClassName = `cpd-theme-` + (stylesheetName.includes("light") ? "light" : "dark");
+    let compoundThemeClassName = `cpd-theme-` + (isLightStylesheet(stylesheetName) ? "light" : "dark");
     // Always respect user OS preference!
     if (isHighContrastTheme(theme) || window.matchMedia("(prefers-contrast: more)").matches) {
         compoundThemeClassName += "-hc";

@@ -18,10 +18,18 @@ export const ENCRYPTION_UI = false;
  */
 export const LOCAL_PASSWORDS = false;
 
-/** Our built-in theme (res/themes/gigawatt). */
+/** Our built-in theme (res/themes/gigawatt). Light first (Luke, 8 Oct 2026). */
 export const GIGAWATT_THEME = "gigawatt";
+export const GIGAWATT_THEME_IS_DARK = false;
 
 /** Built-in theme ids that are dark; upstream only knows "dark" and "dark-hc". */
 export function isDarkBuiltInTheme(themeId: string): boolean {
-    return themeId === "dark" || themeId === "dark-hc" || themeId === GIGAWATT_THEME;
+    if (themeId === GIGAWATT_THEME) return GIGAWATT_THEME_IS_DARK;
+    return themeId === "dark" || themeId === "dark-hc";
+}
+
+/** Whether a stylesheet name should get Compound's light token set. */
+export function isLightStylesheet(stylesheetName: string): boolean {
+    if (stylesheetName === GIGAWATT_THEME) return !GIGAWATT_THEME_IS_DARK;
+    return stylesheetName.includes("light");
 }

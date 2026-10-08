@@ -7,6 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Com
 Please see LICENSE files in the repository root for full details.
 */
 
+import { ENCRYPTION_UI } from "../gigawatt/features";
 import { type MatrixClient, ClientStoppedError } from "matrix-js-sdk/src/matrix";
 import { logger as baseLogger, LogSpan } from "matrix-js-sdk/src/logger";
 import { type CryptoSessionStateChange } from "@matrix-org/analytics-events/types/typescript/CryptoSessionStateChange";
@@ -246,6 +247,14 @@ export class DeviceListener {
         const crypto = cli.getCrypto();
         if (!crypto) {
             logSpan.debug("crypto not enabled");
+            return;
+        }
+
+        if (!ENCRYPTION_UI) {
+            // Gigawatt: no end-to-end encryption on this homeserver, so the
+            // verification, recovery and key-storage checks (and their toasts)
+            // would only ever nag about things that cannot matter here.
+            logSpan.debug("gigawatt: encryption UI disabled; skipping device checks");
             return;
         }
 

@@ -14,6 +14,7 @@ export interface RunInfo {
     input_tokens?: number | null;
     output_tokens?: number | null;
     duration_ms?: number;
+    route?: { tier?: string; reason?: string; p?: number; confidence?: number };
 }
 
 export function runInfoOf(content: IContent): RunInfo | undefined {
@@ -30,6 +31,19 @@ export function RunReceipt({ content }: { content: IContent }): JSX.Element | nu
     const run = runInfoOf(content);
     if (!run) return null;
     const parts: string[] = [];
+    if (run.route?.tier) {
+        const why =
+            run.route.reason === "override"
+                ? "you chose"
+                : run.route.reason === "sticky"
+                  ? "kept for this thread"
+                  : run.route.reason === "stakes"
+                    ? "raised: high stakes"
+                    : run.route.reason === "judge" && run.route.p !== undefined
+                      ? `auto ${Math.round(run.route.p * 100)}%`
+                      : "default";
+        parts.push(`${run.route.tier} (${why})`);
+    }
     if (run.model) parts.push(run.model);
     const tin = formatTokens(run.input_tokens);
     const tout = formatTokens(run.output_tokens);

@@ -64,6 +64,7 @@ import { MessageComposerUrlPreviewViewModel } from "../../../viewmodels/composer
 import { useScopedRoomContext } from "../../../contexts/ScopedRoomContext";
 import PlatformPeg from "../../../PlatformPeg";
 import { ModuleApi } from "../../../modules/Api";
+import { ENCRYPTION_UI } from "../../../gigawatt/features";
 
 // The prefix used when persisting editor drafts to localstorage.
 export const WYSIWYG_EDITOR_STATE_STORAGE_PREFIX = "mx_wysiwyg_state_";
@@ -549,7 +550,8 @@ export class MessageComposer extends React.Component<IProps, IState> {
 
     public render(): React.ReactNode {
         let leftIcon: false | JSX.Element = false;
-        if (!this.state.isWysiwygLabEnabled) {
+        // Gigawatt: no encryption-state icon next to the composer.
+        if (!this.state.isWysiwygLabEnabled && ENCRYPTION_UI) {
             if (!this.props.e2eStatus) {
                 leftIcon = (
                     <div className="mx_MessageComposer_e2eIconWrapper">

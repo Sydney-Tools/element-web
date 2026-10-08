@@ -11,6 +11,7 @@ import { logger } from "matrix-js-sdk/src/logger";
 import { TypedEventEmitter } from "matrix-js-sdk/src/matrix";
 
 import SettingsStore from "../SettingsStore";
+import { isDarkBuiltInTheme } from "../../gigawatt/features";
 import dis from "../../dispatcher/dispatcher";
 import { Action } from "../../dispatcher/actions";
 import { findHighContrastTheme, getCustomTheme } from "../../theme";
@@ -133,7 +134,7 @@ export default class ThemeWatcher extends TypedEventEmitter<ThemeWatcherEvent, T
         if (theme.startsWith("custom-")) {
             return !!getCustomTheme(theme.substring("custom-".length)).is_dark;
         }
-        return theme === "dark" || theme === "dark-hc";
+        return isDarkBuiltInTheme(theme);
     }
 
     private themeBasedOnSystem(): string | undefined {

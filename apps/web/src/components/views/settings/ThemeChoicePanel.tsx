@@ -26,6 +26,7 @@ import {
     type ITheme,
 } from "../../../theme";
 import { useSettingValue } from "../../../hooks/useSettings";
+import { isDarkBuiltInTheme } from "../../../gigawatt/features";
 
 /**
  * Panel to choose the theme
@@ -174,7 +175,7 @@ function useThemes(): Array<ITheme & { isDark: boolean }> {
         // Check if the themes are dark
         return allThemes.map((theme) => {
             const customTheme = customThemeMap.get(theme.name);
-            const isDark = (customTheme ? customTheme.is_dark : theme.id.includes("dark")) || false;
+            const isDark = (customTheme ? customTheme.is_dark : isDarkBuiltInTheme(theme.id)) || false;
             return { ...theme, isDark };
         });
     }, [customThemes]);

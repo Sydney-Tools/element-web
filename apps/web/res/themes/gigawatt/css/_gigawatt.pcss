@@ -1,0 +1,73 @@
+/*
+Gigawatt (Sydney Tools) — tokens and variables layered over the dark theme.
+
+Palette: near-black navy canvas, slate panels, flux-orange accent (the
+DeLorean's tail-lights), sky-blue links.
+*/
+
+/* Compound design tokens. Same layer as the imported defaults so these win
+   by source order (the same trick theme.ts uses for custom themes). */
+@layer compound-tokens {
+    :root,
+    [class*="cpd-theme-"] {
+        /* surfaces */
+        --cpd-color-bg-canvas-default: #07090f;
+        --cpd-color-bg-canvas-disabled: #0b0e16;
+        --cpd-color-bg-subtle-secondary: #111726;
+        --cpd-color-bg-subtle-primary: #1b2232;
+
+        /* text */
+        --cpd-color-text-primary: #e9eef7;
+        --cpd-color-text-secondary: #9fb0c7;
+        --cpd-color-text-on-solid-primary: #101317;
+        --cpd-color-text-link-external: #7dd3fc;
+
+        /* accent: flux orange */
+        --cpd-color-text-action-accent: #ff6a4a;
+        --cpd-color-icon-accent-primary: #ff6a4a;
+        --cpd-color-bg-accent-rest: #ff6a4a;
+        --cpd-color-bg-accent-hovered: #ff7f63;
+        --cpd-color-bg-accent-pressed: #e8563a;
+        --cpd-color-border-accent: #ff6a4a;
+        --cpd-color-bg-action-primary-rest: #ff6a4a;
+        --cpd-color-bg-action-primary-hovered: #ff7f63;
+        --cpd-color-bg-action-primary-pressed: #e8563a;
+        --cpd-color-bg-action-primary-disabled: #5a3a33;
+        --cpd-color-border-focused: #ff6a4a;
+    }
+}
+
+/* Element's theme variables (compile-time, so they must come after _dark.pcss
+   and before _components.pcss — see gigawatt.pcss). */
+$room-highlight-color: #1c2640;
+$focus-bg-color: $room-highlight-color;
+$menu-selected-color: $room-highlight-color;
+$selected-color: $room-highlight-color;
+$togglesw-off-color: #2a3346;
+$event-highlight-bg-color: #2a1b17;
+$reaction-row-button-selected-bg-color: #2a1b17;
+$eventbubble-self-bg: #2a1b17;
+$eventbubble-others-bg: #131a2b;
+$codeblock-background-color: #131a2b;
+$input-darker-bg-color: #0e1320;
+$breadcrumb-placeholder-bg-color: #1b2232;
+$spacePanel-bg-color: #0e1320;
+$panel-gradient: rgb(17, 23, 38, 0), rgb(17, 23, 38, 1);
+$message-action-bar-border-color: #2a3346;
+$header-panel-text-secondary-color: #9fb0c7;
+$text-secondary-color: #9fb0c7;
+$location-live-color: #ff6a4a;
+$location-live-secondary-color: #ffd6cc;
+
+/* The signed-out splash gets the flux glow instead of Element's pastel. */
+.mx_SplashPage::before {
+    background-image:
+        radial-gradient(60% 70% at 85% 0%, rgb(255, 106, 74, 0.22) 0%, rgb(255, 106, 74, 0) 100%),
+        radial-gradient(45% 45% at 0% 0%, rgb(125, 211, 252, 0.14) 0%, rgb(125, 211, 252, 0) 100%) !important;
+}
+
+/* Our own hooks (kept here so a glance at the theme shows what Gigawatt
+   adds). Classes are prefixed gw_ to stay clear of upstream. */
+.gw_accent {
+    color: var(--cpd-color-text-action-accent);
+}

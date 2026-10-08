@@ -17,3 +17,11 @@ export const ENCRYPTION_UI = false;
  * set or change. When false: no "Set a new account password" panel.
  */
 export const LOCAL_PASSWORDS = false;
+
+/** Our built-in theme (res/themes/gigawatt). */
+export const GIGAWATT_THEME = "gigawatt";
+
+/** Built-in theme ids that are dark; upstream only knows "dark" and "dark-hc". */
+export function isDarkBuiltInTheme(themeId: string): boolean {
+    return themeId === "dark" || themeId === "dark-hc" || themeId === GIGAWATT_THEME;
+}

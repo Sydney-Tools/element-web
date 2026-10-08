@@ -42,6 +42,7 @@ import { MediaPreviewGroupViewModel } from "../../../viewmodels/message-body/Med
 import PopOutIcon from "@vector-im/compound-design-tokens/assets/web/icons/pop-out";
 import { EditMessageComposerWrapper } from "../rooms/EditMessageComposerWrapper";
 import { ModuleApi } from "../../../modules/Api";
+import { RunReceipt } from "../../../flux/RunReceipt";
 
 const logger = rootLogger.getChild("TextualBodyFactory");
 
@@ -317,12 +318,15 @@ export function TextualBodyFactory(props: Readonly<IBodyProps>): JSX.Element {
     }
 
     return (
-        <TextualBodyView
-            vm={textualBodyVm}
-            body={<EventContentBodyView vm={eventContentBodyVm} as={willHaveWrapper ? "span" : "div"} />}
-            bodyRef={contentRef}
-            urlPreviews={<MediaPreviewGroupPreview vm={mediaPreviewVm} className="mx_TextualBody_urlPreviews" />}
-            className={getTextualBodyClassName(content.msgtype as MsgType | undefined)}
-        />
+        <>
+            <TextualBodyView
+                vm={textualBodyVm}
+                body={<EventContentBodyView vm={eventContentBodyVm} as={willHaveWrapper ? "span" : "div"} />}
+                bodyRef={contentRef}
+                urlPreviews={<MediaPreviewGroupPreview vm={mediaPreviewVm} className="mx_TextualBody_urlPreviews" />}
+                className={getTextualBodyClassName(content.msgtype as MsgType | undefined)}
+            />
+            <RunReceipt content={content} />
+        </>
     );
 }

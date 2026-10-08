@@ -65,6 +65,7 @@ import { type IDiff } from "../../../editor/diff";
 import { getBlobSafeMimeType } from "../../../utils/blobs";
 import { EMOJI_REGEX } from "../../../HtmlUtils";
 import { attachMentions, attachRelation, attachUrlPreviews } from "../../../utils/messages";
+import { inviteMentionedAgents } from "../../../flux/inviteAgents";
 import { type RoomUploadViewModel, useRoomUploadViewModel } from "../../../viewmodels/room/RoomUploadViewModel";
 import { type MessageComposerUrlPreviewViewModel } from "../../../viewmodels/composer/MessageComposerUrlPreviewViewModel";
 import { linksIn } from "../../../utils/UrlUtils";
@@ -475,6 +476,9 @@ export class SendMessageComposer extends React.Component<ISendMessageComposerPro
 
             const threadId =
                 this.props.relation?.rel_type === THREAD_RELATION_TYPE.name ? this.props.relation.event_id : null;
+
+            // Flux: mentioning an agent that is not in the room adds it (design 007).
+            await inviteMentionedAgents(this.props.mxClient, this.props.room, content);
 
             const prom = doMaybeLocalRoomAction(
                 roomId,

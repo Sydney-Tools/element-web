@@ -41,6 +41,8 @@ import { JoinRule, type Room } from "matrix-js-sdk/src/matrix";
 import { Box, Flex, HistoryVisibilityBadge, LinkedText, StatusTextView } from "@element-hq/web-shared-components";
 
 import BaseCard from "./BaseCard.tsx";
+import Modal from "../../../Modal";
+import AddAgentDialog from "../../../flux/AddAgentDialog";
 import { _t } from "../../../languageHandler";
 import RoomAvatar from "../avatars/RoomAvatar";
 import { E2EStatus } from "../../../utils/ShieldUtils.ts";
@@ -247,6 +249,12 @@ const RoomSummaryCardView: React.FC<IProps> = ({
                     label={_t("action|invite")}
                     disabled={!vm.canInviteToState}
                     onSelect={vm.onInviteToRoomClick}
+                />
+                <MenuItem
+                    Icon={ExtensionsIcon}
+                    label="Add an agent"
+                    disabled={!vm.canInviteToState}
+                    onSelect={() => Modal.createDialog(AddAgentDialog, { room })}
                 />
 
                 <Separator />

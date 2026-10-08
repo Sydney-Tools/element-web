@@ -29,7 +29,7 @@ import { FLUX_THEME, isLightStylesheet } from "./flux/features";
 import ThemeWatcher from "./settings/watchers/ThemeWatcher";
 import { FontWatcher } from "./settings/watchers/FontWatcher";
 
-export const DEFAULT_THEME = "light";
+export const DEFAULT_THEME = "flux"; // Flux: unknown or stale theme values fall back to our theme, not Element light
 const HIGH_CONTRAST_THEMES: Record<string, string> = {
     light: "light-high-contrast",
 };

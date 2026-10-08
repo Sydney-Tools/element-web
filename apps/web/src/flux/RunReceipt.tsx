@@ -11,10 +11,10 @@ import { type IContent } from "matrix-js-sdk/src/matrix";
 export interface RunInfo {
     agent?: string;
     model?: string;
-    input_tokens?: number | null;
-    output_tokens?: number | null;
-    duration_ms?: number;
-    route?: { tier?: string; reason?: string; p?: number; confidence?: number };
+    input_tokens?: number | string | null;
+    output_tokens?: number | string | null;
+    duration_ms?: number | string;
+    route?: { tier?: string; reason?: string; p?: number | string; confidence?: number | string };
 }
 
 export function runInfoOf(content: IContent): RunInfo | undefined {
@@ -22,8 +22,10 @@ export function runInfoOf(content: IContent): RunInfo | undefined {
     return run && typeof run === "object" ? (run as RunInfo) : undefined;
 }
 
-function formatTokens(n: number | null | undefined): string | null {
-    if (n === null || n === undefined) return null;
+function formatTokens(raw: number | string | null | undefined): string | null {
+    if (raw === null || raw === undefined) return null;
+    const n = Number(raw);
+    if (Number.isNaN(n)) return null;
     return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
 }
 
@@ -39,16 +41,18 @@ export function RunReceipt({ content }: { content: IContent }): JSX.Element | nu
                   ? "kept for this thread"
                   : run.route.reason === "stakes"
                     ? "raised: high stakes"
-                    : run.route.reason === "judge" && run.route.p !== undefined
-                      ? `auto ${Math.round(run.route.p * 100)}%`
-                      : "default";
+                    : run.route.reason === "preference"
+                      ? "your preference"
+                      : run.route.reason === "judge" && run.route.p !== undefined
+                        ? `auto ${Math.round(Number(run.route.p) * 100)}%`
+                        : "default";
         parts.push(`${run.route.tier} (${why})`);
     }
     if (run.model) parts.push(run.model);
     const tin = formatTokens(run.input_tokens);
     const tout = formatTokens(run.output_tokens);
     if (tin || tout) parts.push(`${tin ?? "?"} in · ${tout ?? "?"} out`);
-    if (run.duration_ms) parts.push(`${(run.duration_ms / 1000).toFixed(1)} s`);
+    if (run.duration_ms) parts.push(`${(Number(run.duration_ms) / 1000).toFixed(1)} s`);
     const runId = content["au.syd.tools.run_id"];
     return (
         <div className="fx_RunReceipt" title={typeof runId === "string" ? runId : undefined}>

@@ -20,6 +20,7 @@ import { SettingsSubsection } from "../../shared/SettingsSubsection";
 import SettingsTab from "../SettingsTab";
 import { SettingsSection } from "../../shared/SettingsSection";
 import { MediaPreviewAccountSettings } from "../user/MediaPreviewAccountSettings";
+import { AgentInstructionsSettings } from "../../../../../flux/AgentInstructionsSettings";
 
 interface IProps {
     room: Room;
@@ -82,6 +83,10 @@ export default class GeneralRoomSettingsTab extends React.Component<IProps, ISta
                         canSetAliases={canSetAliases}
                         canonicalAliasEvent={canonicalAliasEv}
                     />
+                </SettingsSection>
+
+                <SettingsSection heading="Agents">
+                    <AgentInstructionsSettings room={room} />
                 </SettingsSection>
 
                 <SettingsSection heading={_t("room_settings|general|other_section")}>

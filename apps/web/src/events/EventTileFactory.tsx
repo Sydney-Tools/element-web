@@ -34,6 +34,7 @@ import type LegacyCallEventGrouper from "../components/structures/LegacyCallEven
 import { type IEventTileType, type EventTileProps } from "../components/views/rooms/EventTile";
 import { TimelineRenderingType } from "../contexts/RoomContext";
 import MessageEvent from "../components/views/messages/MessageEvent";
+import { ApprovalCard, approvalOf } from "../flux/ApprovalCard";
 import LegacyCallEvent from "../components/views/messages/LegacyCallEvent";
 import { CallEvent } from "../components/views/messages/CallEvent";
 import { RoomPredecessorTile } from "../components/views/messages/RoomPredecessorTile";
@@ -86,6 +87,7 @@ type FactoryProps = Omit<EventTileTypeProps, "ref">;
 type Factory<X = FactoryProps> = (ref: React.RefObject<any> | undefined, props: X) => JSX.Element;
 
 export const MessageEventFactory: Factory = (ref, props) => <MessageEvent ref={ref} {...props} />;
+export const ApprovalCardFactory: Factory = (ref, props) => <ApprovalCard mxEvent={props.mxEvent} />;
 const LegacyCallEventFactory: Factory<FactoryProps & { callEventGrouper: LegacyCallEventGrouper }> = (ref, props) => (
     <LegacyCallEvent ref={ref} {...props} />
 );
@@ -305,6 +307,8 @@ export function pickFactory(
     }
 
     if (evType === EventType.RoomMessage) {
+        // Flux: an agent's approval card renders as a card, not as the fallback notice text.
+        if (approvalOf(mxEvent)) return ApprovalCardFactory;
         // don't show verification requests we're not involved in,
         // not even when showing hidden events
         const content = mxEvent.getContent();

@@ -104,11 +104,10 @@ export class InitialCryptoSetupStore extends EventEmitter {
             // Create the user's cross-signing keys
             await createCrossSigning(this.client);
 
-            // Check for any existing backup and enable key backup if there isn't one
-            const currentKeyBackup = await cryptoApi.checkKeyBackupAndEnable();
-            if (currentKeyBackup === null) {
-                await cryptoApi.resetKeyBackup();
-            }
+            // Gigawatt: no key backup is ever created (no E2EE on this homeserver;
+            // chat content stays on the server). Only the existing one, if any,
+            // is enabled so older devices keep working.
+            await cryptoApi.checkKeyBackupAndEnable();
 
             this.reset();
 

@@ -185,7 +185,7 @@ const RoomSummaryCardView: React.FC<IProps> = ({
                     </Badge>
                 )}
 
-                {!vm.isRoomEncrypted && (
+                {false && !vm.isRoomEncrypted && (
                     <Badge kind="blue">
                         <LockOffIcon width="1rem" height="1rem" color="var(--cpd-color-icon-info-primary)" />
                         {_t("common|unencrypted")}
@@ -288,11 +288,6 @@ const RoomSummaryCardView: React.FC<IProps> = ({
                             Icon={PollsIcon}
                             label={_t("right_panel|polls_button")}
                             onSelect={vm.onRoomPollHistoryClick}
-                        />
-                        <MenuItem
-                            Icon={ExportArchiveIcon}
-                            label={_t("export_chat|title")}
-                            onSelect={vm.onRoomExportClick}
                         />
                     </>
                 )}

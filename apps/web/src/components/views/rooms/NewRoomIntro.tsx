@@ -31,6 +31,7 @@ import { useScopedRoomContext } from "../../../contexts/ScopedRoomContext.tsx";
 import { useTopic } from "../../../hooks/room/useTopic";
 import { topicToHtml } from "../../../HtmlUtils";
 import { SDKContext } from "../../../contexts/SDKContext.ts";
+import { ENCRYPTION_UI } from "../../../gigawatt/features";
 
 function hasExpectedEncryptionSettings(matrixClient: MatrixClient, room: Room): boolean {
     const isEncrypted: boolean = matrixClient.isRoomEncrypted(room.roomId);
@@ -294,7 +295,7 @@ const NewRoomIntro: React.FC = () => {
 
     return (
         <li className="mx_NewRoomIntro">
-            {false && !hasExpectedEncryptionSettings(cli, room) && (
+            {ENCRYPTION_UI && !hasExpectedEncryptionSettings(cli, room!) && (
                 <EventTileBubble
                     icon={<ErrorSolidIcon color="var(--cpd-color-icon-critical-primary)" />}
                     className="mx_EventTileBubble mx_cryptoEvent"

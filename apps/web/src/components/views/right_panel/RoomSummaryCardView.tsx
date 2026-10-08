@@ -24,7 +24,6 @@ import FavouriteIcon from "@vector-im/compound-design-tokens/assets/web/icons/fa
 import UserAddIcon from "@vector-im/compound-design-tokens/assets/web/icons/user-add";
 import LinkIcon from "@vector-im/compound-design-tokens/assets/web/icons/link";
 import SettingsIcon from "@vector-im/compound-design-tokens/assets/web/icons/settings";
-import ExportArchiveIcon from "@vector-im/compound-design-tokens/assets/web/icons/export-archive";
 import LeaveIcon from "@vector-im/compound-design-tokens/assets/web/icons/leave";
 import FilesIcon from "@vector-im/compound-design-tokens/assets/web/icons/files";
 import ExtensionsIcon from "@vector-im/compound-design-tokens/assets/web/icons/extensions";

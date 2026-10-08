@@ -43,9 +43,11 @@ export function RunReceipt({ content }: { content: IContent }): JSX.Element | nu
                     ? "raised: high stakes"
                     : run.route.reason === "preference"
                       ? "your preference"
-                      : run.route.reason === "judge" && run.route.p !== undefined
-                        ? `auto ${Math.round(Number(run.route.p) * 100)}%`
-                        : "default";
+                      : run.route.reason === "capped"
+                        ? "capped by policy"
+                        : run.route.reason === "judge" && run.route.p !== undefined
+                          ? `auto ${Math.round(Number(run.route.p) * 100)}%`
+                          : "default";
         parts.push(`${run.route.tier} (${why})`);
     }
     if (run.model) parts.push(run.model);

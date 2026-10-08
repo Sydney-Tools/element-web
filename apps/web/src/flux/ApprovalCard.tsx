@@ -27,6 +27,7 @@ export interface ApprovalContent {
     requested_by?: string;
     tools?: ApprovalTool[];
     summary?: string;
+    approvers?: string;
     status?: "pending" | "approved" | "denied" | "timed out";
     by?: string;
 }
@@ -96,7 +97,19 @@ export function ApprovalCard({ mxEvent }: { mxEvent: MatrixEvent }): JSX.Element
                 </div>
             )}
             {pending && !mine && (
-                <div className="fx_ApprovalCard_note">Waiting for {approval.requested_by} to decide.</div>
+                <div className="fx_ApprovalCard_note">
+                    Waiting for {approval.approvers && approval.approvers !== "the person who asked" ? approval.approvers : approval.requested_by} to decide.
+                    {approval.approvers && approval.approvers !== "the person who asked" && (
+                        <div className="fx_ApprovalCard_actions">
+                            <AccessibleButton kind="primary" onClick={() => decide(true)} disabled={busy}>
+                                Approve
+                            </AccessibleButton>
+                            <AccessibleButton kind="danger_outline" onClick={() => decide(false)} disabled={busy}>
+                                Deny
+                            </AccessibleButton>
+                        </div>
+                    )}
+                </div>
             )}
             {sent && status === "pending" && <div className="fx_ApprovalCard_note">Sent: {sent === "approve" ? "approved" : "denied"}.</div>}
         </div>

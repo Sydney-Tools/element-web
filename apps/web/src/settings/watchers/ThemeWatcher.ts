@@ -11,7 +11,7 @@ import { logger } from "matrix-js-sdk/src/logger";
 import { TypedEventEmitter } from "matrix-js-sdk/src/matrix";
 
 import SettingsStore from "../SettingsStore";
-import { isDarkBuiltInTheme } from "../../gigawatt/features";
+import { isDarkBuiltInTheme } from "../../flux/features";
 import dis from "../../dispatcher/dispatcher";
 import { Action } from "../../dispatcher/actions";
 import { findHighContrastTheme, getCustomTheme } from "../../theme";

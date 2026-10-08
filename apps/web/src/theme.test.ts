@@ -198,7 +198,7 @@ describe("theme", () => {
         it("should return a list of themes", () => {
             vi.spyOn(SettingsStore, "getValue").mockReturnValue([{ name: "pink" }]);
             expect(enumerateThemes()).toEqual({
-                "gigawatt": "Gigawatt",
+                "flux": "Flux",
                 "light": "Light",
                 "light-high-contrast": "Light high contrast",
                 "dark": "Dark",
@@ -209,7 +209,7 @@ describe("theme", () => {
         it("should be robust to malformed custom_themes values", () => {
             vi.spyOn(SettingsStore, "getValue").mockReturnValue([23] as any);
             expect(enumerateThemes()).toEqual({
-                "gigawatt": "Gigawatt",
+                "flux": "Flux",
                 "light": "Light",
                 "light-high-contrast": "Light high contrast",
                 "dark": "Dark",
@@ -221,7 +221,7 @@ describe("theme", () => {
         it("should return a list of themes in the correct order", () => {
             vi.spyOn(SettingsStore, "getValue").mockReturnValue([{ name: "Zebra Striped" }, { name: "Apple Green" }]);
             expect(getOrderedThemes()).toEqual([
-                { id: "gigawatt", name: "Gigawatt" },
+                { id: "flux", name: "Flux" },
                 { id: "light", name: "Light" },
                 { id: "dark", name: "Dark" },
                 { id: "custom-Apple Green", name: "Apple Green" },

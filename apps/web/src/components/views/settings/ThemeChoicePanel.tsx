@@ -26,7 +26,7 @@ import {
     type ITheme,
 } from "../../../theme";
 import { useSettingValue } from "../../../hooks/useSettings";
-import { isDarkBuiltInTheme } from "../../../gigawatt/features";
+import { isDarkBuiltInTheme } from "../../../flux/features";
 
 /**
  * Panel to choose the theme

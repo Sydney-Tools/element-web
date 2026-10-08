@@ -25,7 +25,7 @@ import { logger } from "matrix-js-sdk/src/logger";
 
 import { _t } from "./languageHandler";
 import SettingsStore from "./settings/SettingsStore";
-import { GIGAWATT_THEME, isLightStylesheet } from "./gigawatt/features";
+import { FLUX_THEME, isLightStylesheet } from "./flux/features";
 import ThemeWatcher from "./settings/watchers/ThemeWatcher";
 import { FontWatcher } from "./settings/watchers/FontWatcher";
 
@@ -95,7 +95,7 @@ export function isHighContrastTheme(theme: string): boolean {
 
 export function enumerateThemes(): { [key: string]: string } {
     const BUILTIN_THEMES = {
-        [GIGAWATT_THEME]: "Gigawatt",
+        [FLUX_THEME]: "Flux",
         "light": _t("common|light"),
         "light-high-contrast": _t("theme|light_high_contrast"),
         "dark": _t("common|dark"),

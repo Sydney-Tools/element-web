@@ -965,8 +965,8 @@ export const SETTINGS: Settings = {
         shouldExportToRageshake: false,
     },
     "use_system_theme": {
-        // Gigawatt: let config.json's setting_defaults turn system-theme-following off so the
-        // Gigawatt theme is the default for everyone; people can still change it per device.
+        // Flux: let config.json's setting_defaults turn system-theme-following off so the
+        // Flux theme is the default for everyone; people can still change it per device.
         supportedLevels: LEVELS_DEVICE_ONLY_SETTINGS_WITH_CONFIG,
         default: true,
         displayName: _td("settings|appearance|match_system_theme"),

@@ -18,7 +18,7 @@ import AccessibleButton from "../../../elements/AccessibleButton";
 import DeactivateAccountDialog from "../../../dialogs/DeactivateAccountDialog";
 import Modal from "../../../../../Modal";
 import { UIFeature } from "../../../../../settings/UIFeature";
-import { LOCAL_PASSWORDS } from "../../../../../gigawatt/features";
+import { LOCAL_PASSWORDS } from "../../../../../flux/features";
 import ErrorDialog, { extractErrorMessageFromError } from "../../../dialogs/ErrorDialog";
 import ChangePassword from "../../ChangePassword";
 import SettingsTab from "../SettingsTab";

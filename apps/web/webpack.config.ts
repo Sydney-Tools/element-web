@@ -58,7 +58,7 @@ const cssThemes = {
     "theme-light": "./res/themes/light/css/light.pcss",
     "theme-light-high-contrast": "./res/themes/light-high-contrast/css/light-high-contrast.pcss",
     "theme-dark": "./res/themes/dark/css/dark.pcss",
-    "theme-gigawatt": "./res/themes/gigawatt/css/gigawatt.pcss",
+    "theme-flux": "./res/themes/flux/css/flux.pcss",
     "theme-light-custom": "./res/themes/light-custom/css/light-custom.pcss",
     "theme-dark-custom": "./res/themes/dark-custom/css/dark-custom.pcss",
 };

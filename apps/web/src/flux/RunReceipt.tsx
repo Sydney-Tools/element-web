@@ -16,6 +16,7 @@ export interface RunInfo {
     input_tokens?: number | string | null;
     output_tokens?: number | string | null;
     duration_ms?: number | string;
+    cost_usd?: string | number; // list price for the run (design 029), a string because Matrix JSON has no floats
     route?: { tier?: string; reason?: string; p?: number | string; confidence?: number | string };
     // a team run (design 016): who was asked and what each cost
     members?: { agent?: string; model?: string; input_tokens?: number | string; output_tokens?: number | string; denied?: boolean }[];
@@ -176,6 +177,8 @@ export function RunReceipt({ content, mxEvent }: { content: IContent; mxEvent?: 
                       ? "your preference"
                       : run.route.reason === "room"
                         ? "room default"
+                        : run.route.reason === "budget"
+                          ? "budget: cheapest tier"
                         : run.route.reason === "capped"
                         ? "capped by policy"
                         : run.route.reason === "judge" && run.route.p !== undefined
@@ -199,6 +202,8 @@ export function RunReceipt({ content, mxEvent }: { content: IContent; mxEvent?: 
     const tout = formatTokens(run.output_tokens);
     if (tin || tout) parts.push(`${tin ?? "?"} in · ${tout ?? "?"} out`);
     if (run.duration_ms) parts.push(`${(Number(run.duration_ms) / 1000).toFixed(1)} s`);
+    const cost = Number(run.cost_usd);
+    if (run.cost_usd !== undefined && !Number.isNaN(cost) && cost > 0) parts.push(cost < 0.01 ? "<$0.01" : `$${cost.toFixed(2)}`);
     const runId = content["au.syd.tools.run_id"];
     // provenance (017, APS): a reply with a signed action-result receipt shows a quiet mark; the title says the
     // verdict, who witnessed the run, how many signatures and tool receipts there are

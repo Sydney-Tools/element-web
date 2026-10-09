@@ -326,7 +326,7 @@ export function TextualBodyFactory(props: Readonly<IBodyProps>): JSX.Element {
                 urlPreviews={<MediaPreviewGroupPreview vm={mediaPreviewVm} className="mx_TextualBody_urlPreviews" />}
                 className={getTextualBodyClassName(content.msgtype as MsgType | undefined)}
             />
-            <RunReceipt content={content} />
+            <RunReceipt content={content} mxEvent={props.mxEvent} />
         </>
     );
 }

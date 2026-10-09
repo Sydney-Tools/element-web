@@ -5,8 +5,10 @@ answered, how many tokens it took and how long. Read from the
 first form). Quiet by design: one small line, no colour.
 */
 
-import React, { type JSX } from "react";
-import { type IContent } from "matrix-js-sdk/src/matrix";
+import React, { type JSX, useContext, useState } from "react";
+import { type IContent, type MatrixEvent } from "matrix-js-sdk/src/matrix";
+
+import MatrixClientContext from "../contexts/MatrixClientContext";
 
 export interface RunInfo {
     agent?: string;
@@ -31,7 +33,81 @@ function formatTokens(raw: number | string | null | undefined): string | null {
     return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
 }
 
-export function RunReceipt({ content }: { content: IContent }): JSX.Element | null {
+/*
+Feedback (design 023): 👍 / 👎 send a reaction on the reply (the appservice records it as a
+feedback event tied to the run); "Report…" posts `!report <text>` as a reply in the thread,
+which also reaches the IT room. One click, nothing else in the thread.
+*/
+function Feedback({ mxEvent }: { mxEvent: MatrixEvent }): JSX.Element | null {
+    const client = useContext(MatrixClientContext);
+    const [sent, setSent] = useState<"up" | "down" | "report" | null>(null);
+    const [reporting, setReporting] = useState(false);
+    const [text, setText] = useState("");
+    const roomId = mxEvent.getRoomId();
+    const eventId = mxEvent.getId();
+    if (!roomId || !eventId) return null;
+
+    const thumb = async (up: boolean): Promise<void> => {
+        await client.sendEvent(roomId, "m.reaction" as any, {
+            "m.relates_to": { rel_type: "m.annotation", event_id: eventId, key: up ? "👍" : "👎" },
+        });
+        setSent(up ? "up" : "down");
+    };
+    const report = async (): Promise<void> => {
+        const body = text.trim();
+        if (!body) return;
+        const threadRoot = mxEvent.threadRootId ?? eventId;
+        await client.sendEvent(roomId, "m.room.message" as any, {
+            msgtype: "m.text",
+            body: `!report ${body}`,
+            "m.relates_to": {
+                rel_type: "m.thread",
+                event_id: threadRoot,
+                is_falling_back: false,
+                "m.in_reply_to": { event_id: eventId },
+            },
+        });
+        setReporting(false);
+        setText("");
+        setSent("report");
+    };
+
+    if (sent === "report") return <span className="fx_RunReceipt_fb">reported, thanks</span>;
+    return (
+        <span className="fx_RunReceipt_fb">
+            <button type="button" className={sent === "up" ? "fx_on" : ""} title="Good answer" onClick={() => thumb(true)}>
+                👍
+            </button>
+            <button type="button" className={sent === "down" ? "fx_on" : ""} title="Poor answer" onClick={() => thumb(false)}>
+                👎
+            </button>
+            {reporting ? (
+                <span className="fx_RunReceipt_report">
+                    <input
+                        type="text"
+                        value={text}
+                        placeholder="What was wrong?"
+                        autoFocus
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") void report();
+                            if (e.key === "Escape") setReporting(false);
+                        }}
+                    />
+                    <button type="button" onClick={() => void report()}>
+                        Send
+                    </button>
+                </span>
+            ) : (
+                <button type="button" title="Report a problem with this answer" onClick={() => setReporting(true)}>
+                    Report…
+                </button>
+            )}
+        </span>
+    );
+}
+
+export function RunReceipt({ content, mxEvent }: { content: IContent; mxEvent?: MatrixEvent }): JSX.Element | null {
     const run = runInfoOf(content);
     if (!run) return null;
     const parts: string[] = [];
@@ -64,7 +140,8 @@ export function RunReceipt({ content }: { content: IContent }): JSX.Element | nu
     const runId = content["au.syd.tools.run_id"];
     return (
         <div className="fx_RunReceipt" title={typeof runId === "string" ? runId : undefined}>
-            {parts.join(" · ")}
+            <span>{parts.join(" · ")}</span>
+            {mxEvent ? <Feedback mxEvent={mxEvent} /> : null}
         </div>
     );
 }

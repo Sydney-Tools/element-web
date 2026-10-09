@@ -7,3 +7,48 @@
     opacity: 0.8;
     user-select: none;
 }
+
+.fx_RunReceipt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cpd-space-2x);
+}
+
+.fx_RunReceipt_fb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cpd-space-1x);
+    opacity: 0;
+    transition: opacity 0.15s;
+
+    button {
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+        color: inherit;
+        padding: 0 var(--cpd-space-1x);
+        border-radius: var(--cpd-space-1x);
+
+        &:hover,
+        &.fx_on {
+            background: var(--cpd-color-bg-subtle-secondary);
+            color: var(--cpd-color-text-primary);
+        }
+    }
+
+    input {
+        font: inherit;
+        border: 1px solid var(--cpd-color-border-interactive-secondary);
+        border-radius: var(--cpd-space-1x);
+        padding: 0 var(--cpd-space-1x);
+        min-width: 14em;
+    }
+}
+
+.mx_EventTile:hover .fx_RunReceipt_fb,
+.fx_RunReceipt_fb:focus-within,
+.fx_RunReceipt_fb:has(.fx_on) {
+    opacity: 1;
+}

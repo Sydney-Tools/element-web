@@ -19,11 +19,8 @@ export interface RunInfo {
     route?: { tier?: string; reason?: string; p?: number | string; confidence?: number | string };
     // a team run (design 016): who was asked and what each cost
     members?: { agent?: string; model?: string; input_tokens?: number | string; output_tokens?: number | string; denied?: boolean }[];
-    // provenance (design 017): witness, signature and chain link
+    // provenance (design 017): what witnessed the run; the signed records live in `au.syd.tools.aps`
     observed_by?: "gateway" | "runtime" | "self" | string;
-    sig?: string;
-    key_id?: string;
-    prev?: string;
     // a bring-your-own agent (design 025): what served the reply and under whose account
     via?: Via;
 }
@@ -50,6 +47,27 @@ const ACCOUNT_NAMES: Record<string, string> = {
     "team-seat": "team seat",
     "personal-subscription": "personal subscription",
 };
+
+/*
+APS (Agent Passport System, design 017): every reply carries `au.syd.tools.aps` with the delegation the
+agent ran under and the three draft receipts: intent (agent), policy decision (appservice), result
+(appservice issues, agent co-signs). The client shows a quiet mark and the verdict; `!verify` in the
+thread or the browser verifier at agent-passport.org checks the signatures.
+*/
+export interface ApsPayload {
+    action_ref?: string;
+    action?: { kind?: string; requester?: string; model?: string };
+    delegation?: { delegation_id?: string; subject?: string; issuer?: string };
+    intent?: { receipt_id?: string };
+    decision?: { receipt_id?: string; result?: { verdict?: string; constraints?: string[] } };
+    result?: { receipt_id?: string; signatures?: { signer: string }[]; result?: { status?: string } };
+    tools?: unknown[];
+}
+
+export function apsOf(content: IContent): ApsPayload | undefined {
+    const aps = content["au.syd.tools.aps"];
+    return aps && typeof aps === "object" ? (aps as ApsPayload) : undefined;
+}
 
 export function viaOf(content: IContent): Via | undefined {
     const via = content["au.syd.tools.via"] ?? runInfoOf(content)?.via;
@@ -182,8 +200,11 @@ export function RunReceipt({ content, mxEvent }: { content: IContent; mxEvent?: 
     if (tin || tout) parts.push(`${tin ?? "?"} in · ${tout ?? "?"} out`);
     if (run.duration_ms) parts.push(`${(Number(run.duration_ms) / 1000).toFixed(1)} s`);
     const runId = content["au.syd.tools.run_id"];
-    // provenance (017): a signed receipt shows a quiet mark; the title says who witnessed the run and the key
-    const signed = typeof run.sig === "string" && run.sig.length > 0;
+    // provenance (017, APS): a reply with a signed action-result receipt shows a quiet mark; the title says the
+    // verdict, who witnessed the run, how many signatures and tool receipts there are
+    const aps = apsOf(content);
+    const signed = Boolean(aps?.result?.receipt_id);
+    const verdict = aps?.decision?.result?.verdict;
     const witness =
         run.observed_by === "gateway"
             ? "witnessed by the AI gateway"
@@ -193,16 +214,24 @@ export function RunReceipt({ content, mxEvent }: { content: IContent; mxEvent?: 
                 ? "self-reported by the agent"
                 : undefined;
     const sigTitle = signed
-        ? [`signed receipt (key ${run.key_id ?? "?"})`, witness, run.prev ? "chained to the previous receipt" : "first in its chain"]
+        ? [
+              `APS receipts: intent, ${verdict ?? "decision"}, result (${aps?.result?.signatures?.length ?? 0} signatures)`,
+              witness,
+              aps?.tools && aps.tools.length > 0 ? `${aps.tools.length} tool receipt${aps.tools.length === 1 ? "" : "s"}` : undefined,
+              aps?.action_ref ? `action ${aps.action_ref.slice(0, 12)}` : undefined,
+              "verify with !verify in this thread",
+          ]
               .filter(Boolean)
               .join(" · ")
-        : witness;
+        : aps?.decision?.result?.verdict === "deny"
+          ? "APS: denied by policy (intent and decision receipts only)"
+          : witness;
     return (
         <div className="fx_RunReceipt" title={typeof runId === "string" ? runId : undefined}>
             <span>{parts.join(" · ")}</span>
             {signed || witness ? (
                 <span className={signed ? "fx_RunReceipt_sig fx_signed" : "fx_RunReceipt_sig"} title={sigTitle}>
-                    {signed ? "✓ signed" : run.observed_by === "self" ? "unverified" : ""}
+                    {signed ? "✓ signed" : verdict === "deny" ? "✗ denied" : run.observed_by === "self" ? "unverified" : ""}
                 </span>
             ) : null}
             {mxEvent ? <Feedback mxEvent={mxEvent} /> : null}

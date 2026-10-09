@@ -19,6 +19,41 @@ export interface RunInfo {
     route?: { tier?: string; reason?: string; p?: number | string; confidence?: number | string };
     // a team run (design 016): who was asked and what each cost
     members?: { agent?: string; model?: string; input_tokens?: number | string; output_tokens?: number | string; denied?: boolean }[];
+    // provenance (design 017): witness, signature and chain link
+    observed_by?: "gateway" | "runtime" | "self" | string;
+    sig?: string;
+    key_id?: string;
+    prev?: string;
+    // a bring-your-own agent (design 025): what served the reply and under whose account
+    via?: Via;
+}
+
+export interface Via {
+    harness?: string;
+    model?: string;
+    account_class?: string;
+    owner?: string;
+    agent?: string;
+}
+
+const HARNESS_NAMES: Record<string, string> = {
+    "claude-code": "Claude Code",
+    codex: "Codex",
+    goose: "Goose",
+    "gemini-cli": "Gemini CLI",
+    pi: "Pi",
+    shell: "a local harness",
+};
+
+const ACCOUNT_NAMES: Record<string, string> = {
+    "org-key": "company key",
+    "team-seat": "team seat",
+    "personal-subscription": "personal subscription",
+};
+
+export function viaOf(content: IContent): Via | undefined {
+    const via = content["au.syd.tools.via"] ?? runInfoOf(content)?.via;
+    return via && typeof via === "object" ? (via as Via) : undefined;
 }
 
 export function runInfoOf(content: IContent): RunInfo | undefined {
@@ -121,7 +156,9 @@ export function RunReceipt({ content, mxEvent }: { content: IContent; mxEvent?: 
                     ? "raised: high stakes"
                     : run.route.reason === "preference"
                       ? "your preference"
-                      : run.route.reason === "capped"
+                      : run.route.reason === "room"
+                        ? "room default"
+                        : run.route.reason === "capped"
                         ? "capped by policy"
                         : run.route.reason === "judge" && run.route.p !== undefined
                           ? `auto ${Math.round(Number(run.route.p) * 100)}%`
@@ -132,15 +169,42 @@ export function RunReceipt({ content, mxEvent }: { content: IContent; mxEvent?: 
         const asked = run.members.filter((m) => !m.denied).map((m) => m.agent ?? "?");
         parts.push(`asked ${asked.join(", ")}`);
     }
-    if (run.model) parts.push(run.model);
+    const via = viaOf(content);
+    if (via) {
+        // "via Claude Code · team seat": the harness and account class, so people and audits know what served it (025 §6)
+        const bits = [`via ${HARNESS_NAMES[via.harness ?? ""] ?? via.harness ?? "a harness"}`];
+        if (via.account_class) bits.push(ACCOUNT_NAMES[via.account_class] ?? via.account_class);
+        parts.push(bits.join(" · "));
+        if (via.model) parts.push(via.model);
+    } else if (run.model) parts.push(run.model);
     const tin = formatTokens(run.input_tokens);
     const tout = formatTokens(run.output_tokens);
     if (tin || tout) parts.push(`${tin ?? "?"} in · ${tout ?? "?"} out`);
     if (run.duration_ms) parts.push(`${(Number(run.duration_ms) / 1000).toFixed(1)} s`);
     const runId = content["au.syd.tools.run_id"];
+    // provenance (017): a signed receipt shows a quiet mark; the title says who witnessed the run and the key
+    const signed = typeof run.sig === "string" && run.sig.length > 0;
+    const witness =
+        run.observed_by === "gateway"
+            ? "witnessed by the AI gateway"
+            : run.observed_by === "runtime"
+              ? "witnessed by the agent runtime"
+              : run.observed_by === "self"
+                ? "self-reported by the agent"
+                : undefined;
+    const sigTitle = signed
+        ? [`signed receipt (key ${run.key_id ?? "?"})`, witness, run.prev ? "chained to the previous receipt" : "first in its chain"]
+              .filter(Boolean)
+              .join(" · ")
+        : witness;
     return (
         <div className="fx_RunReceipt" title={typeof runId === "string" ? runId : undefined}>
             <span>{parts.join(" · ")}</span>
+            {signed || witness ? (
+                <span className={signed ? "fx_RunReceipt_sig fx_signed" : "fx_RunReceipt_sig"} title={sigTitle}>
+                    {signed ? "✓ signed" : run.observed_by === "self" ? "unverified" : ""}
+                </span>
+            ) : null}
             {mxEvent ? <Feedback mxEvent={mxEvent} /> : null}
         </div>
     );

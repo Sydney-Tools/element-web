@@ -52,3 +52,12 @@
 .fx_RunReceipt_fb:has(.fx_on) {
     opacity: 1;
 }
+
+.fx_RunReceipt_sig {
+    font: var(--cpd-font-body-xs-regular);
+    color: var(--cpd-color-text-secondary);
+
+    &.fx_signed {
+        color: var(--cpd-color-text-success-primary);
+    }
+}

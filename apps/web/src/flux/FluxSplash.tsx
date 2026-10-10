@@ -4,7 +4,7 @@ Flux (Sydney Tools) — the loading screen shown while the app starts.
 
 import React, { type JSX } from "react";
 
-import { InlineSpinner } from "@vector-im/compound-web";
+import MorphingInfinity from "./MorphingInfinity";
 
 export default function FluxSplash(): JSX.Element {
     return (
@@ -13,7 +13,7 @@ export default function FluxSplash(): JSX.Element {
                 Flux
             </div>
             <div className="fx_Splash_spinner">
-                <InlineSpinner size={24} role="progressbar" />
+                <MorphingInfinity size={44} aria-label="Loading Flux" />
             </div>
         </div>
     );

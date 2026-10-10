@@ -11,6 +11,7 @@ Please see LICENSE files in the repository root for full details.
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { getMockClientWithEventEmitter } from "test-utils";
 
+import SdkConfig from "../../SdkConfig";
 import { shouldForceDisableEncryption } from "./shouldForceDisableEncryption";
 
 describe("shouldForceDisableEncryption()", () => {
@@ -60,5 +61,12 @@ describe("shouldForceDisableEncryption()", () => {
             },
         });
         expect(shouldForceDisableEncryption(mockClient)).toEqual(true);
+    });
+
+    it("should return true when config.json's default_server_config force-disables encryption (Flux)", () => {
+        mockClient.getClientWellKnown.mockReturnValue(undefined);
+        SdkConfig.put({ default_server_config: { "io.element.e2ee": { force_disable: true } } } as any);
+        expect(shouldForceDisableEncryption(mockClient)).toEqual(true);
+        SdkConfig.reset();
     });
 });

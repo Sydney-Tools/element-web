@@ -14,7 +14,8 @@ import { _t } from "../../../languageHandler";
 
 const AuthFooter = (): ReactElement => {
     const brandingConfig = SdkConfig.getObject("branding");
-    const links = brandingConfig?.get("auth_footer_links") ?? [
+    const configuredLinks = brandingConfig?.get("auth_footer_links");
+    const links = configuredLinks ?? [
         { text: "Blog", url: "https://element.io/blog" },
         { text: "Mastodon", url: "https://mastodon.matrix.org/@Element" },
         { text: "GitHub", url: "https://github.com/element-hq/element-web" },
@@ -29,12 +30,15 @@ const AuthFooter = (): ReactElement => {
         );
     }
 
+    // Flux: a deployment that sets auth_footer_links (even to []) gets exactly those links and nothing else.
     return (
         <footer className="mx_AuthFooter" role="contentinfo">
             {authFooterLinks}
-            <a href="https://matrix.org" target="_blank" rel="noreferrer noopener">
-                {_t("powered_by_matrix")}
-            </a>
+            {configuredLinks === undefined && (
+                <a href="https://matrix.org" target="_blank" rel="noreferrer noopener">
+                    {_t("powered_by_matrix")}
+                </a>
+            )}
         </footer>
     );
 };

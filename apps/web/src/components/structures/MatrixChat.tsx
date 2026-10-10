@@ -429,12 +429,16 @@ export default class MatrixChat extends React.PureComponent<IProps, IState> {
             return;
         }
 
-        if (crossSigningIsSetUp) {
+        if (await shouldSkipSetupEncryption(cli)) {
+            // Flux: encryption is force-disabled and no room is encrypted, so neither "confirm your identity"
+            // nor the first-time setup has anything to protect; straight to the app.
+            this.onShowPostLoginScreen();
+        } else if (crossSigningIsSetUp) {
             // if the user has previously set up cross-signing, verify this device so we can fetch the
             // private keys.
 
             this.setStateForNewView({ view: Views.COMPLETE_SECURITY });
-        } else if (!(await shouldSkipSetupEncryption(cli))) {
+        } else {
             // if cross-signing is not yet set up, do so now if possible.
             InitialCryptoSetupStore.sharedInstance().startInitialCryptoSetup(
                 cli,

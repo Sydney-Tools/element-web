@@ -8,6 +8,7 @@ Please see LICENSE files in the repository root for full details.
 
 import { type MatrixClient } from "matrix-js-sdk/src/matrix";
 
+import SdkConfig from "../../SdkConfig";
 import { getE2EEWellKnown } from "../WellKnownUtils";
 
 /**
@@ -27,5 +28,8 @@ export function shouldForceDisableEncryption(client: MatrixClient): boolean {
         const shouldForceDisable = e2eeWellKnown["force_disable"] === true;
         return shouldForceDisable;
     }
-    return false;
+    // Flux: a deployment that force-disables encryption in config.json's default_server_config (because every
+    // room is captured for the company record) counts even when the homeserver publishes no .well-known.
+    const configured = SdkConfig.get("default_server_config") as Record<string, any> | undefined;
+    return configured?.["io.element.e2ee"]?.["force_disable"] === true;
 }
